@@ -1,0 +1,15 @@
+# Profil dev : H2 en mémoire (pas besoin de MySQL en local)
+spring:
+  datasource:
+    url: jdbc:h2:mem:bookshop;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+
+jwt:
+  secret: dev-secret-change-in-production-min-256-bits
+  expiration-ms: 86400000
