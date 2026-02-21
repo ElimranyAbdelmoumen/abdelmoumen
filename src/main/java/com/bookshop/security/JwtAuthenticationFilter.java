@@ -60,7 +60,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String extractToken(HttpServletRequest request) {
         String header = request.getHeader(AUTHORIZATION_HEADER);
         if (StringUtils.hasText(header) && header.startsWith(BEARER_PREFIX)) {
-            return header.substring(BEARER_PREFIX.length()).trim();
+            String token = header.substring(BEARER_PREFIX.length()).trim();
+            // Accept token even if pasted with quotes from JSON (e.g. Swagger)
+            if (token.length() >= 2 && token.startsWith("\"") && token.endsWith("\"")) {
+                token = token.substring(1, token.length() - 1);
+            }
+            return token;
         }
         return null;
     }
