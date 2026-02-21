@@ -38,6 +38,16 @@ Les identifiants MySQL ne doivent **pas** être dans le code : utiliser des vari
 
 ## Lancement en local
 
+### Option A — Sans MySQL (profil `local`, H2 en mémoire)
+
+```powershell
+mvn spring-boot:run "-Dspring-boot.run.profiles=local"
+```
+
+L’API écoute sur le port 8080. Données en mémoire (seed via `DataLoader`).
+
+### Option B — Avec MySQL
+
 1. Variables d’environnement (ou profil par défaut avec `application.yml`) :
    - `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD`
    - Optionnel : `JWT_SECRET`
