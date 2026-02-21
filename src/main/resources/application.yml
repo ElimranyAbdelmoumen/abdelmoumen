@@ -19,6 +19,16 @@ spring:
 server:
   port: ${SERVER_PORT:8080}
 
+# Actuator health check
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: when-authorized
+
 # SpringDoc OpenAPI (Swagger)
 springdoc:
   api-docs:
