@@ -1,6 +1,8 @@
 package com.bookshop.service;
 
 import com.bookshop.dto.BookCreateRequest;
+import com.bookshop.dto.BookDetailResponse;
+import com.bookshop.dto.BookResponse;
 import com.bookshop.entity.Book;
 import com.bookshop.entity.Category;
 import com.bookshop.exception.ResourceNotFoundException;
@@ -9,6 +11,7 @@ import com.bookshop.repository.CategoryRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BookService {
@@ -25,9 +28,19 @@ public class BookService {
         return bookRepository.findAllByOrderByIdAsc(pageable);
     }
 
+    @Transactional(readOnly = true)
+    public Page<BookResponse> findAllAsResponse(Pageable pageable) {
+        return bookRepository.findAllByOrderByIdAsc(pageable).map(BookResponse::from);
+    }
+
     public Book findById(Long id) {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found: " + id));
+    }
+
+    @Transactional(readOnly = true)
+    public BookDetailResponse findByIdAsDetailResponse(Long id) {
+        return BookDetailResponse.from(findById(id));
     }
 
     public Book create(BookCreateRequest request) {

@@ -3,7 +3,6 @@ package com.bookshop.controller;
 import com.bookshop.dto.BookDetailResponse;
 import com.bookshop.dto.BookResponse;
 import com.bookshop.dto.CategoryResponse;
-import com.bookshop.entity.Book;
 import com.bookshop.entity.Category;
 import com.bookshop.repository.CategoryRepository;
 import com.bookshop.service.BookService;
@@ -40,13 +39,11 @@ public class PublicController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Book> books = bookService.findAll(pageable);
-        return ResponseEntity.ok(books.map(BookResponse::from));
+        return ResponseEntity.ok(bookService.findAllAsResponse(pageable));
     }
 
     @GetMapping("/books/{id}")
     public ResponseEntity<BookDetailResponse> getBook(@PathVariable Long id) {
-        Book book = bookService.findById(id);
-        return ResponseEntity.ok(BookDetailResponse.from(book));
+        return ResponseEntity.ok(bookService.findByIdAsDetailResponse(id));
     }
 }
